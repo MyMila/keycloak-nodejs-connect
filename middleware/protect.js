@@ -58,7 +58,8 @@ module.exports = function (keycloak, spec) {
     }
 
     if (keycloak.redirectToLogin(request)) {
-      forceLogin(keycloak, request, response);
+      const payload = { status: 'ERROR', errors: [ { code: 'UNAUTHORIZED', message: 'Unauthorized access attempt' } ] };
+      return response.send(401, payload);
     } else {
       return keycloak.accessDenied(request, response, next);
     }
